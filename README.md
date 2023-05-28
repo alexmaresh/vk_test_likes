@@ -12,13 +12,13 @@ likes.add, likes.delete.
 # Подготовка
 1. Получить токен https://dev.vk.com/api/access-token/getting-started
 2. Создать и заполнить файл .env по образцу в .env.example
+3. Для работы с загрузкой данных из файла(используется yaml) заполнить его необходимыми тестовыми данными
 
-# Запуск
-3. В виртуальном окружении pip install requirements
-4. Выполнить команду pytest
-
-# Отчет
-Чтобы сгенерировать отчет: pytest --alluredir=/tmp/my_allure_results
-Чтобы посмотреть отчет: allure serve /tmp/my_allure_results
+# Запуск с отчетом
+1. В виртуальном окружении pip install requirements
+2. Выполнить команду pytest --alluredir=/tmp/my_allure_results
+2.1 Чтобы посмотреть отчет: allure serve /tmp/my_allure_results
 
 Подробности про установку аллюр можно найти здесь https://docs.qameta.io/allure/#_pytest
+
+Для запуска pytest по группам тестов pytest -m smoke (add,delete, etc)

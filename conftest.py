@@ -1,10 +1,11 @@
 import pytest
-from config import API_GET_LIKES, API_IS_LIKED, ACCESS_TOKEN, API_VERSION, VK_USER_ID, ITEM_ID, API_ADD_LIKES, API_DEL_LIKES,POSTS
+from config import API_GET_LIKES, API_IS_LIKED, ACCESS_TOKEN, API_VERSION, VK_USER_ID, ITEM_ID, API_ADD_LIKES, API_DEL_LIKES, POSTS
 import os
 import time
 import yaml
 from random import choice
 from utils import get_is_liked, delete_like, add_like, get_likes_count
+
 
 @pytest.fixture
 def params(request):
@@ -15,6 +16,7 @@ def params(request):
         'user_id': VK_USER_ID,
         'item_id': ITEM_ID
     }
+
     def fin():
         """Ограничение количества запросов, иначе код ошибки 6, слишком много запросов в секунду."""
         time.sleep(2)
@@ -27,19 +29,25 @@ def params(request):
 def get_likes_url():
     return API_GET_LIKES
 
+
 @pytest.fixture(scope="session")
 def get_is_liked_url():
     return API_IS_LIKED
+
 
 @pytest.fixture(scope="session")
 def add_likes_url():
     return API_ADD_LIKES
 
+
 @pytest.fixture(scope="session")
 def del_likes_url():
     return API_DEL_LIKES
 
+
 """Фикстура для проверки параметризации из файла yaml"""
+
+
 def pytest_generate_tests(metafunc):
 
     # Проверка наличия аргумента multi_type
@@ -61,7 +69,10 @@ def pytest_generate_tests(metafunc):
 
     return metafunc.parametrize("multi_type, item_id", test_cases)
 
+
 """Так как нет возможности генерить тестовые данные, используются реальные айди постов"""
+
+
 @pytest.fixture
 def not_liked_post(params):
     post = choice(POSTS)

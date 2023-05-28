@@ -7,3 +7,4 @@ exclude =
     env
     .env
     venv
+ignore=E501,E126
