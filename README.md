@@ -16,3 +16,9 @@ likes.add, likes.delete.
 # Запуск
 3. В виртуальном окружении pip install requirements
 4. Выполнить команду pytest
+
+# Отчет
+Чтобы сгенерировать отчет: pytest --alluredir=/tmp/my_allure_results
+Чтобы посмотреть отчет: allure serve /tmp/my_allure_results
+
+Подробности про установку аллюр можно найти здесь https://docs.qameta.io/allure/#_pytest

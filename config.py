@@ -12,4 +12,4 @@ ITEM_ID = os.getenv("ITEM_ID")
 
 API_GET_LIKES = API_URL + "getList"
 API_ADD_LIKES = API_URL + "add"
-API_DEL_LIKES = API_URL + "del"
+API_DEL_LIKES = API_URL + "delete"
