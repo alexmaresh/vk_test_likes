@@ -1,8 +1,10 @@
 import pytest
-from config import API_GET_LIKES, ACCESS_TOKEN, API_VERSION, VK_USER_ID, ITEM_ID, API_ADD_LIKES, API_DEL_LIKES
+from config import API_GET_LIKES, API_IS_LIKED, ACCESS_TOKEN, API_VERSION, VK_USER_ID, ITEM_ID, API_ADD_LIKES, API_DEL_LIKES,POSTS
 import os
 import time
 import yaml
+from random import choice
+from utils import get_is_liked, delete_like, add_like, get_likes_count
 
 @pytest.fixture
 def params(request):
@@ -14,8 +16,8 @@ def params(request):
         'item_id': ITEM_ID
     }
     def fin():
-        """Ограничение количества запросов"""
-        time.sleep(0.5)
+        """Ограничение количества запросов, иначе код ошибки 6, слишком много запросов в секунду."""
+        time.sleep(2)
 
     request.addfinalizer(fin)
     return data
@@ -26,6 +28,10 @@ def get_likes_url():
     return API_GET_LIKES
 
 @pytest.fixture(scope="session")
+def get_is_liked_url():
+    return API_IS_LIKED
+
+@pytest.fixture(scope="session")
 def add_likes_url():
     return API_ADD_LIKES
 
@@ -33,7 +39,7 @@ def add_likes_url():
 def del_likes_url():
     return API_DEL_LIKES
 
-'''Фикстура для проверки параметризации из файла yaml'''
+"""Фикстура для проверки параметризации из файла yaml"""
 def pytest_generate_tests(metafunc):
 
     # Проверка наличия аргумента multi_type
@@ -54,3 +60,23 @@ def pytest_generate_tests(metafunc):
         raise ValueError("Test cases not loaded")
 
     return metafunc.parametrize("multi_type, item_id", test_cases)
+
+"""Так как нет возможности генерить тестовые данные, используются реальные айди постов"""
+@pytest.fixture
+def not_liked_post(params):
+    post = choice(POSTS)
+    if get_is_liked(post, params):
+        likes = delete_like(post, params)
+    else:
+        likes = get_likes_count(post, params)
+    return {"post_id": post, "likes": likes}
+
+
+@pytest.fixture
+def liked_post(params):
+    post = choice(POSTS)
+    if not get_is_liked(post, params):
+        likes = add_like(post, params)
+    else:
+        likes = get_likes_count(post, params)
+    return {"post_id": post, "likes": likes}
